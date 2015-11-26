@@ -4,7 +4,10 @@ require_once 'lib/nusoap.php';
  
 // creamos el cliente o elemento que se conecte a mi webService    
 //crea cliente q puede leer el formato soap / ingresamos la direccion de nuestro webService
-$cliente = new nusoap_client("http://localhost:82/WebService/webBasicoSoap/webService_soap.php");
+
+// Configurar cliente para que pueda leer el webservice -- Agregamos parametos adiccional en la invocacion ?wsdl&debug=0", "wsdl");
+$cliente = new nusoap_client("http://localhost:82/WebService/webBasicoSoap/webService_soap.php?wsdl&debug=0", "wsdl");
+
 
 //llamamos la funcion que se encuentra dentro del webService muestraPlanestas
 //nos conectamos al cliente 

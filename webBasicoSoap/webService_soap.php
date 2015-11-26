@@ -41,10 +41,38 @@ if(!isset($HTTP_RAW_POST_DATA))
 // creamos el servicdor de este webService definimos la varible $server cuando alguien se conecte va a resibir la info en formato soap
     $server = new soap_server();
     
-// Regitramos la funcion muestraPlanestas o  varible para que los usuarios interactuen con ella 
-    $server ->register("muestraPlanestas");
+    /************* Documentar el webService **********/
+    //Creamos una nuva instancia del servidor
+    //Lallamos la instancia configureWSDL para documentar o describir el contenido del webService le agregamos 2 parametros nombre del webservive =Info Blog y creamos un name space urn:infoBlog
     
-    $server ->register("muestraImage");
+    $server ->configureWSDL("Info Blog WS", "urn:infoBlog");
+     // Regitramos la funcion muestraPlanestas o  varible para que los usuarios interactuen con ella 
+    //$server ->register("muestraPlanestas"); // se cambia para agregar parametos de documentacion del webservice
+    $server ->register("muestraPlanestas",//llamamos el metodo a documentar
+            array(),//parametro como no recibe parametros el arreglo esta vacio
+            array('return' => 'xsd:string'),//respuesta nos devuelve una cadena de texto
+            'urn:infoBlog', //name space el mismo que configuramos en la instancia
+            'urn:infoBlog#muestraPlanestas', //Invocamos la accion del webservice
+            'rpc',//estilo
+            'encoded', //uso que tiene el web service
+            'Muestra el contenido para el Blog');//descripcion 
+   
+    //$server ->register("muestraImage"); se cambia para documentar webservice
+    $server->register("muestraImage",
+            array('categoria'=>'xsd:string'), //recibe un parametro se crea con el mismo nombre q tiene en el metodo
+            array('retur'=>'xsd:string'),//respuesta
+            'urn:infoBlog', //name space
+            'urn:infoBlog#muestraImage', //accion
+            'rpc',//estilo
+            'encode', //Uso
+            'Muestra una imagen dinamica' //Descripcion
+            );
+    
+    /************* Fin Documentar el webService **********/
+    
+
+    
+    
  //definmos como vamos a interactuar para resibir los datos     
 //Resibimos los datos / nos permite leer los datos q nos estan llegando
     $server ->service($HTTP_RAW_POST_DATA);
